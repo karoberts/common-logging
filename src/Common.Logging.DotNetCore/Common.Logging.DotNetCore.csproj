@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>3.4.0.1</VersionPrefix>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <DefineConstants>$(DefineConstants);PORTABLE;DOTNETCORE</DefineConstants>
+    <DebugType>portable</DebugType>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>Common.Logging</AssemblyName>
+    <PackageId>Common.Logging.DotNetCore</PackageId>
+    <Copyright>Copyright 2006-2011 the Common Infrastructure Libraries Team. (+LD)</Copyright>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <!--<GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>-->
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>../../LDTS.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="..\Common.Logging.Portable\Logging\Factory\ResharperAnnotation.cs" />
+    <Compile Include="..\Common.Logging.Portable\**\*.cs;..\CommonAssemblyInfo.cs" Exclude="..\Common.Logging.Portable\Logging\Factory\ResharperAnnotation.cs;bin\**;obj\**;**\*.xproj;packages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common.Logging.Core.DotNetCore\Common.Logging.Core.DotNetCore.csproj" />
+  </ItemGroup>
+
+  <!--
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <AssemblyOriginatorKeyFile>../../Common.Net.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+  </PropertyGroup>
+  -->
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+    <PackageReference Include="Microsoft.CSharp" Version="4.4.1" />
+    <PackageReference Include="System.Collections" Version="4.3.0" />
+    <PackageReference Include="System.Diagnostics.Debug" Version="4.3.0" />
+    <PackageReference Include="System.Globalization" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.4.0" />
+    <PackageReference Include="System.Runtime.Extensions" Version="4.3.0" />
+    <PackageReference Include="System.Threading" Version="4.3.0" />
+  </ItemGroup>
+
+</Project>
