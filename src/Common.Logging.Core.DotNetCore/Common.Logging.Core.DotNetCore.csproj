@@ -2,13 +2,15 @@
 
   <PropertyGroup>
     <VersionPrefix>3.4.0.1</VersionPrefix>
+    <AssemblyVersion>3.4.0.1</AssemblyVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
     <DefineConstants>$(DefineConstants);PORTABLE;DOTNETCORE</DefineConstants>
     <DebugType>portable</DebugType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Common.Logging.Core</AssemblyName>
-    <PackageId>Common.Logging.Core.DotNetCore</PackageId>
+    <PackageId>Common.Logging.Core.NetStandard</PackageId>
     <Copyright>Copyright 2006-2011 the Common Infrastructure Libraries Team. (+LD)</Copyright>
+    <Description>Common.Logging.Core (netstandard) (LD)</Description>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>

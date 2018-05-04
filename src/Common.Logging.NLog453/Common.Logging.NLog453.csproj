@@ -5,7 +5,9 @@
     <Company>http://netcommon.sourceforge.net/</Company>
     <Copyright>Copyright 2006-2011 the Common Infrastructure Libraries Team. (+LD)</Copyright>
     <Product>Common.Logging.NLog453</Product>
+    <Description>Common.Logging.Core (netstandard) (LD)</Description>
     <Version>3.4.1.1</Version>
+    <AssemblyVersion>3.4.1.1</AssemblyVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../../LDTS.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>

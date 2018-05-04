@@ -1,0 +1,2 @@
+dotnet pack -c Release --include-source --include-symbols
+
