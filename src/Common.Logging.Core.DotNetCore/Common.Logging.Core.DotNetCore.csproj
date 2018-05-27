@@ -9,8 +9,8 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Common.Logging.Core</AssemblyName>
     <PackageId>Common.Logging.Core.NetStandard</PackageId>
-    <Copyright>Copyright 2006-2011 the Common Infrastructure Libraries Team. (+LD)</Copyright>
-    <Description>Common.Logging.Core (netstandard) (LD)</Description>
+    <Copyright>Copyright 2006-2011 the Common Infrastructure Libraries Team. (+NTERSOL)</Copyright>
+    <Description>Common.Logging.Core (netstandard) (NTERSOL)</Description>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
@@ -18,7 +18,7 @@
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>../../LDTS.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>../../NTERSOL.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
