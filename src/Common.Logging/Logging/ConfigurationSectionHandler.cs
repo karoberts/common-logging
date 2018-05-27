@@ -28,6 +28,7 @@ using Common.Logging.Configuration;
 
 namespace Common.Logging
 {
+#if !NETSTANDARD
     /// <summary>
     /// Used in an application's configuration file (App.Config or Web.Config) to configure the logging subsystem.
     /// </summary>
@@ -228,4 +229,5 @@ namespace Common.Logging
 
         #endregion
     }
+#endif
 }
