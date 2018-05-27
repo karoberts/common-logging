@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>3.4.0.1</VersionPrefix>
-    <AssemblyVersion>3.4.0.1</AssemblyVersion>
+    <VersionPrefix>3.4.1.1</VersionPrefix>
+    <AssemblyVersion>3.4.1.1</AssemblyVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
     <DefineConstants>$(DefineConstants);PORTABLE;DOTNETCORE</DefineConstants>
     <DebugType>portable</DebugType>
