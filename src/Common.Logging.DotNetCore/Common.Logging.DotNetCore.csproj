@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>3.4.1.1</VersionPrefix>
+    <Version>3.4.1.1</Version>
     <AssemblyVersion>3.4.1.1</AssemblyVersion>
+    <FileVersion>3.4.1.1</FileVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
     <DefineConstants>TRACE;DEBUG;PORTABLE;DOTNETCORE;NETSTANDARD2_0;NETSTANDARD</DefineConstants>
     <DebugType>portable</DebugType>
@@ -15,7 +16,7 @@
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <!--<GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>-->
-    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyVersionAttribute>true</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../../NTERSOL.snk</AssemblyOriginatorKeyFile>
