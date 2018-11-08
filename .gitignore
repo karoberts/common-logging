@@ -33,7 +33,6 @@ package/
 target/
 package-nuget/
 PrecompiledWeb/
-*.snk
 buildlog.txt
 *.DotSettings
 project.lock.json

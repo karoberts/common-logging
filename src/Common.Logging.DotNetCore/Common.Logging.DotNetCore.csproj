@@ -1,16 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>3.4.1.1</Version>
-    <AssemblyVersion>3.4.1.1</AssemblyVersion>
-    <FileVersion>3.4.1.1</FileVersion>
+    <VersionPrefix>3.4.1.2</VersionPrefix>
+    <AssemblyVersion>3.4.1.2</AssemblyVersion>
+    <FileVersion>3.4.1.2</FileVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <DefineConstants>TRACE;DEBUG;PORTABLE;DOTNETCORE;NETSTANDARD2_0;NETSTANDARD</DefineConstants>
+    <DefineConstants>$(DefineConstants);PORTABLE;DOTNETCORE</DefineConstants>
     <DebugType>portable</DebugType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Common.Logging</AssemblyName>
     <PackageId>Common.Logging.NetStandard</PackageId>
-    <Copyright>Copyright 2006-2011 the Common Infrastructure Libraries Team. (+NTERSOL)</Copyright>
+    <Copyright>Copyright 2006-2018 the Common Infrastructure Libraries Team. (+NTERSOL)</Copyright>
     <Description>Common.Logging (netstandard) (NTERSOL)</Description>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
