@@ -17,12 +17,7 @@ namespace Common.Logging.Configuration
         /// <param name="configuration"><see cref="LogConfiguration"/> to be parsed.</param>
         public LogConfigurationReader(LogConfiguration configuration)
         {
-            if (configuration == null)
-            {
-                throw new ArgumentNullException("configuration");
-            }
-
-            _configuration = configuration;
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         /// <summary>

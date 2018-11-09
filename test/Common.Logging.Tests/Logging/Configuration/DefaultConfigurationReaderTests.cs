@@ -31,7 +31,7 @@ namespace Common.Logging.Configuration
         [Test]
         public void ReadsAppConfig()
         {            
-            Assert.AreEqual("FromAppConfig", ((System.Collections.Specialized.NameValueCollection)new DefaultConfigurationReader().GetSection("appSettings"))["appConfigCheck"]);
+            Assert.AreEqual("FromAppConfig", ((System.Collections.Specialized.NameValueCollection)new DefaultConfigurationReader("").GetSection("appSettings"))["appConfigCheck"]);
         }
     }
 }

@@ -1,11 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <VersionPrefix>3.4.1.2</VersionPrefix>
     <AssemblyVersion>3.4.1.2</AssemblyVersion>
     <FileVersion>3.4.1.2</FileVersion>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <DefineConstants>$(DefineConstants);PORTABLE;DOTNETCORE</DefineConstants>
+    <TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
     <DebugType>portable</DebugType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Common.Logging</AssemblyName>
@@ -15,16 +14,32 @@
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <!--<GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>-->
-    <GenerateAssemblyVersionAttribute>true</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../../NTERSOL.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <DefineConstants>$(DefineConstants);PORTABLE;NETSTANDARD20</DefineConstants>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net472' ">
+    <DefineConstants>$(DefineConstants);PORTABLE;NETSTANDARD20;NETFULL</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="..\Common.Logging.Portable\Logging\Factory\ResharperAnnotation.cs" />
-    <Compile Include="..\Common.Logging\**\*.cs;..\Common.Logging.Portable\**\*.cs;..\CommonAssemblyInfo.cs" Exclude="..\Common.Logging.Portable\Logging\Factory\ResharperAnnotation.cs;bin\**;obj\**;**\*.xproj;packages\**" />
+    <Compile Include="..\Common.Logging.Portable\**\*.cs;..\CommonAssemblyInfo.cs" Exclude="..\Common.Logging.Portable\Logging\Factory\ResharperAnnotation.cs;bin\**;obj\**;**\*.xproj;packages\**" />
+    <Compile Include="..\Common.Logging\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>

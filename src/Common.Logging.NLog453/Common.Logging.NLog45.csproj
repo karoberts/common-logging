@@ -3,22 +3,22 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Company>http://netcommon.sourceforge.net/</Company>
-    <Copyright>Copyright 2006-2011 the Common Infrastructure Libraries Team. (+NTERSOL)</Copyright>
+    <Copyright>Copyright 2006-2018 the Common Infrastructure Libraries Team. (+NTERSOL)</Copyright>
     <Product>Common.Logging.NLog45</Product>
     <Description>Common.Logging.Core (netstandard) (NTERSOL)</Description>
-    <Version>3.4.1.1</Version>
-    <AssemblyVersion>3.4.1.1</AssemblyVersion>
+    <Version>3.4.1.2</Version>
+    <AssemblyVersion>3.4.1.2</AssemblyVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../../NTERSOL.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0,NLOG2</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD20,NLOG2</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>NETSTANDARD2_0,NLOG2</DefineConstants>
+    <DefineConstants>NETSTANDARD20,NLOG2</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   
@@ -50,7 +50,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.5.5" />
+    <PackageReference Include="NLog" Version="4.5.11" />
   </ItemGroup>
   
   <ItemGroup>

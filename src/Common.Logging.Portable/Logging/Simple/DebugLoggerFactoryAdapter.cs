@@ -66,20 +66,45 @@ namespace Common.Logging.Simple
             : base(null)
         { }
 
+#pragma warning disable CS1570 // XML comment has badly formed XML
+#pragma warning disable CS1587 // XML comment is not placed on a valid language element
         /// <summary>
         /// Initializes a new instance of the <see cref="DebugLoggerFactoryAdapter"/> class.
         /// </summary>
         /// <remarks>
         /// Looks for level, showDateTime, showLogName, dateTimeFormat items from 
         /// <paramref key="properties" /> for use when the GetLogger methods are called.
+ #if NETSTANDARD20
+        /// use appsettings.json for using standard .NET application configuration file
+        /// to configure this adapter.
+        /// <code>
+        /// {
+        ///   "Common.Logging": {
+        ///     "FactoryAdapter": {
+        ///       "Type": "Common.Logging.Simple.TraceLoggerFactoryAdapter, Common.Logging",
+        ///       "Arguments": {
+        ///         "level": "DEBUG",
+        ///         "showLogName": "true",
+        ///         "showDateTime": "true",
+        ///         "dateTimeFormat": "yyyy-MM-dd HH\:mm\:ss\.fff"
+        ///       }
+        ///     }
+        ///   }
+        /// }
+        /// </code>
+#endif
+#if !NETSTANDARD20 || NETFULL
         /// <see cref="System.Configuration.ConfigurationManager"/> for more information on how to use the 
         /// standard .NET application configuraiton file (App.config/Web.config) 
         /// to configure this adapter.
+#endif
         /// </remarks>
         /// <param name="properties">The key value collection, typically specified by the user in 
         /// a configuration section named common/logging.</param>
         public DebugLoggerFactoryAdapter(NameValueCollection properties)
             : base(properties)
+#pragma warning restore CS1587 // XML comment is not placed on a valid language element
+#pragma warning restore CS1570 // XML comment has badly formed XML
         { }
 
         /// <summary>

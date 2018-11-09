@@ -89,7 +89,7 @@ namespace Common.Logging
         /// You can always change the source of your configuration settings by setting another <see cref="IConfigurationReader"/> instance
         /// on <see cref="ConfigurationReader"/>.
         /// </remarks>
-        public static string COMMON_LOGGING_SECTION { get { return "common/logging"; } }
+        public static string COMMON_LOGGING_SECTION => "common/logging";
 
         /// <summary>
         /// The key of the default configuration section to read settings from.
@@ -98,7 +98,7 @@ namespace Common.Logging
         /// You can always change the source of your configuration settings by setting another <see cref="IConfigurationReader"/> instance
         /// on <see cref="ConfigurationReader"/>.
         /// </remarks>
-        string ILogManager.COMMON_LOGGING_SECTION { get { return COMMON_LOGGING_SECTION; } }
+        string ILogManager.COMMON_LOGGING_SECTION => COMMON_LOGGING_SECTION;
 
         private static IConfigurationReader _configurationReader;
         private static ILoggerFactoryAdapter _adapter;
@@ -123,7 +123,7 @@ namespace Common.Logging
         /// </remarks>
         public static void Reset()
         {
-            Reset(new DefaultConfigurationReader());
+            Reset(new DefaultConfigurationReader(jsonSectionName: "Common.Logging"));
         }
 
         void ILogManager.Reset() { Reset(); }
@@ -146,11 +146,7 @@ namespace Common.Logging
         {
             lock (_loadLock)
             {
-                if (reader == null)
-                {
-                    throw new ArgumentNullException("reader");
-                }
-                _configurationReader = reader;
+                _configurationReader = reader ?? throw new ArgumentNullException(nameof(reader));
                 _adapter = null;
             }
         }
@@ -201,7 +197,7 @@ namespace Common.Logging
         {
             if (configuration == null)
             {
-                throw new ArgumentNullException("configuration");
+                throw new ArgumentNullException(nameof(configuration));
             }
 
             Reset(new LogConfigurationReader(configuration));
@@ -358,7 +354,11 @@ namespace Common.Logging
             // Expression<TDelegate>.Compile  is missing in portable libraries targeting silverlight
             // but it is present on silverlight so we can just call it 
             //var function = lambda.Compile();
+#if NETSTANDARD20
+            var compileFunction = lambda.Compile().GetMethodInfo();
+#else
             var compileFunction = lambda.GetType().GetMethod("Compile", new Type[0]);
+#endif
             var function = (Func<MethodBase>)compileFunction.Invoke(lambda, null);
 
             return function;
@@ -548,7 +548,7 @@ namespace Common.Logging
         /// <returns>the <see cref="ILoggerFactoryAdapter"/> instance. Is never <c>null</c></returns>
         public static ILoggerFactoryAdapter BuildLoggerFactoryAdapterFromLogSettings(LogSetting setting)
         {
-            ArgUtils.AssertNotNull("setting", setting);
+            ArgUtils.AssertNotNull(nameof(setting), setting);
             // already ensured by LogSetting
             //            AssertArgIsAssignable<ILoggerFactoryAdapter>("setting.FactoryAdapterType", setting.FactoryAdapterType
             //                                , "Specified FactoryAdapter does not implement {0}.  Check implementation of class {1}"

@@ -66,7 +66,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Logging.ApplicationI
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NLog", "NLog", "{44BB008D-B8C2-40CF-B32B-BABB430AA81B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Logging.NLog4511", "src\Common.Logging.NLog453\Common.Logging.NLog4511.csproj", "{6DBA87C7-0A3F-47F1-A0A1-4EEBBA24C38B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Logging.NLog45", "src\Common.Logging.NLog453\Common.Logging.NLog45.csproj", "{6DBA87C7-0A3F-47F1-A0A1-4EEBBA24C38B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -191,7 +191,7 @@ Global
 		{6DBA87C7-0A3F-47F1-A0A1-4EEBBA24C38B} = {44BB008D-B8C2-40CF-B32B-BABB430AA81B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		NAntAddinLastFileName = Common.Logging.build
 		SolutionGuid = {A14EC4C2-5D63-4B9A-942A-729DC978FFC6}
+		NAntAddinLastFileName = Common.Logging.build
 	EndGlobalSection
 EndGlobal

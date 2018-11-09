@@ -18,6 +18,8 @@
 
 #endregion
 
+#if NETFULL
+
 using System;
 using System.Collections;
 using System.Configuration;
@@ -231,3 +233,5 @@ namespace Common.Logging
     }
 #endif
 }
+
+#endif

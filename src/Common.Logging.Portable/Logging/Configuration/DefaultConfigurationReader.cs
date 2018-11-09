@@ -19,6 +19,12 @@
 #endregion
 
 using System;
+using System.Diagnostics;
+using System.IO;
+#if NETSTANDARD20
+using Microsoft.Extensions.Configuration;
+#endif
+
 namespace Common.Logging.Configuration
 {
     /// <summary>
@@ -28,6 +34,20 @@ namespace Common.Logging.Configuration
     /// <author>Mark Pollack</author>
     public class DefaultConfigurationReader : IConfigurationReader
     {
+#if NETSTANDARD20
+        private readonly string _jsonSection;
+#endif
+
+        /// <summary>
+        /// configure a default configuration reader
+        /// </summary>
+        public DefaultConfigurationReader(string jsonSectionName)
+        {
+#if NETSTANDARD20
+            _jsonSection = jsonSectionName;
+#endif
+        }
+
         /// <summary>
         /// Parses the configuration section and returns the resulting object.
         /// Using the <c>System.Configuration.ConfigurationManager</c>
@@ -45,31 +65,69 @@ namespace Common.Logging.Configuration
         /// </remarks>
         public object GetSection(string sectionName)
         {
-#if DOTNETCORE     // No System.Configuration in DotNetCore, replace with something DotNetCore-specific?
+#if NETSTANDARD20 
+            // No System.Configuration in .net core/standard, try appsettings.json
+            var obj = TryAppSettingsJson(_jsonSection);
+            if (obj != null)
+                return obj;
+#endif
+
+            // try app.config
+            return TrySystemDotConfig(sectionName);
+        }
+
+#if NETSTANDARD20    
+        private static object TryAppSettingsJson(string sectionName)
+        {
+            try
+            {
+                var config = new ConfigurationBuilder()
+                        .SetBasePath(Directory.GetCurrentDirectory())
+                        .AddJsonFile("appsettings.json")
+                        .Build();
+
+                var logConfig = new LogConfiguration();
+                config.GetSection(sectionName).Bind(logConfig);
+
+                if (logConfig.FactoryAdapter != null)
+                    return new LogConfigurationReader(logConfig).GetSection(null);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"exception {e.GetType().FullName} during load of appsettings.json {e.Message}");
+            }
+
             return null;
-#else
+        }
+#endif
+
+        /// <summary>
+        /// this will attempt to load config from System.Configuration and app/web.config
+        /// for full framework usage (which if .net 472 can use netstandard 2.0)
+        /// for .net core, this won't find the class and will return null
+        /// </summary>
+        private static object TrySystemDotConfig(string sectionName)
+        {
 #if PORTABLE
-            // We should instead look for something implementing 
             // IConfigurationReader in (platform specific) Common.Logging dll and use that
             const string configManager40 = "System.Configuration.ConfigurationManager, System.Configuration, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a";
             var configurationManager = Type.GetType(configManager40);
             if(configurationManager == null)
             {
-                // Silverlight, and maybe if System.Configuration is not loaded?
+                // Silverlight or .net core, and maybe if System.Configuration is not loaded?
                 return null;
             }
-#if !WinRT
+    #if !WinRT
             var getSection = configurationManager.GetMethod("GetSection", new[] { typeof(string) });
-#else
+    #else
             var getSection = configurationManager.GetMethod("GetSection");
-#endif
+    #endif
             if (getSection == null)
                 throw new PlatformNotSupportedException("Could not find System.Configuration.ConfigurationManager.GetSection method");
 
             return getSection.Invoke(null, new[] {sectionName});
 #else
             return System.Configuration.ConfigurationManager.GetSection(sectionName);
-#endif
 #endif
         }
     }

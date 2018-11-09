@@ -48,8 +48,8 @@ namespace Common.Logging.Configuration
         /// </param>
         public LogSetting(Type factoryAdapterType, NameValueCollection properties)
         {
-            ArgUtils.AssertNotNull("factoryAdapterType", factoryAdapterType);
-            ArgUtils.AssertIsAssignable<ILoggerFactoryAdapter>("factoryAdapterType", factoryAdapterType
+            ArgUtils.AssertNotNull(nameof(factoryAdapterType), factoryAdapterType);
+            ArgUtils.AssertIsAssignable<ILoggerFactoryAdapter>(nameof(factoryAdapterType), factoryAdapterType
                 , "Type {0} does not implement {1}", factoryAdapterType.AssemblyQualifiedName, typeof(ILoggerFactoryAdapter).FullName);
 
             _factoryAdapterType = factoryAdapterType;
