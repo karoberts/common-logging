@@ -19,7 +19,7 @@ using System.Security.Permissions;
 
 [assembly: CLSCompliantAttribute(true)]
 
-#if !NETSTANDARD20
+#if !NETSTANDARD
 
 #if PORTABLE
 [assembly: AssemblyConfigurationAttribute("portable; release")]

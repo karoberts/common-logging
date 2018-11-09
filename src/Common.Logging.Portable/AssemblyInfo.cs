@@ -3,9 +3,8 @@ using System.Runtime.CompilerServices;
 
 using Common.Logging;
 
-[assembly: System.Reflection.AssemblyProduct("Common Logging Framework")]
-
 #if !NETSTANDARD20
+[assembly: System.Reflection.AssemblyProduct("Common Logging Framework")]
 [assembly: System.Security.SecurityTransparent]
 #endif
 

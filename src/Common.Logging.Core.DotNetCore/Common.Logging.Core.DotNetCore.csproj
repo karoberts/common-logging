@@ -1,23 +1,22 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <VersionPrefix>3.4.1.2</VersionPrefix>
     <AssemblyVersion>3.4.1.2</AssemblyVersion>
     <FileVersion>3.4.1.2</FileVersion>
+    <Product>Common.Logging (NTERSOL)</Product>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <DefineConstants>$(DefineConstants);PORTABLE;DOTNETCORE</DefineConstants>
+    <DefineConstants>$(DefineConstants);PORTABLE;NETSTANDARD</DefineConstants>
     <DebugType>portable</DebugType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Common.Logging.Core</AssemblyName>
     <PackageId>Common.Logging.Core.NetStandard</PackageId>
-    <Copyright>Copyright 2006-20118 the Common Infrastructure Libraries Team. (+NTERSOL)</Copyright>
+    <Copyright>(c) 2006-20118 the Common Infrastructure Libraries Team. (+NTERSOL)</Copyright>
     <Description>Common.Logging.Core (netstandard) (NTERSOL)</Description>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../../NTERSOL.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>

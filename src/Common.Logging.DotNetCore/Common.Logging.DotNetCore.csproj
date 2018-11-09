@@ -4,29 +4,28 @@
     <VersionPrefix>3.4.1.2</VersionPrefix>
     <AssemblyVersion>3.4.1.2</AssemblyVersion>
     <FileVersion>3.4.1.2</FileVersion>
+    <Product>Common.Logging (NTERSOL)</Product>
     <TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
     <DebugType>portable</DebugType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Common.Logging</AssemblyName>
     <PackageId>Common.Logging.NetStandard</PackageId>
-    <Copyright>Copyright 2006-2018 the Common Infrastructure Libraries Team. (+NTERSOL)</Copyright>
+    <Copyright>(c) 2006-2018 the Common Infrastructure Libraries Team. (+NTERSOL)</Copyright>
     <Description>Common.Logging (netstandard) (NTERSOL)</Description>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../../NTERSOL.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    <DefineConstants>$(DefineConstants);PORTABLE;NETSTANDARD20</DefineConstants>
+    <DefineConstants>$(DefineConstants);PORTABLE;NETSTANDARD;NETSTANDARD20</DefineConstants>
   </PropertyGroup>
   
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net472' ">
-    <DefineConstants>$(DefineConstants);PORTABLE;NETSTANDARD20;NETFULL</DefineConstants>
+    <DefineConstants>$(DefineConstants);PORTABLE;NETSTANDARD;NETSTANDARD20;NETFULL</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
