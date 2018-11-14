@@ -121,7 +121,7 @@ namespace Common.Logging.Simple
         /// <param name="showDateTime">Include the current time in the log message.</param>
         /// <param name="showLogName">Include the instance key in the log message.</param>
         /// <param name="dateTimeFormat">The date and time format to use in the log message.</param>
-        public AbstractSimpleLogger(string logName, LogLevel logLevel, bool showlevel
+        protected AbstractSimpleLogger(string logName, LogLevel logLevel, bool showlevel
                                  , bool showDateTime, bool showLogName, string dateTimeFormat)
         {
             _name = logName;
@@ -144,7 +144,7 @@ namespace Common.Logging.Simple
         {
             if (stringBuilder == null)
             {
-                throw new ArgumentNullException("stringBuilder");
+                throw new ArgumentNullException(nameof(stringBuilder));
             }
 
             // Append date-time if so configured
@@ -202,7 +202,7 @@ namespace Common.Logging.Simple
 
         /// <summary>
         /// Returns <see langword="true" /> if the current <see cref="LogLevel" /> is greater than or
-        /// equal to <see cref="LogLevel.Trace" />. If it is, all messages will be sent to <see cref="Console.Out" />.
+        /// equal to <see cref="LogLevel.Trace" />. If it is, all messages will be sent to stdout
         /// </summary>
         public override bool IsTraceEnabled
         {
@@ -211,7 +211,7 @@ namespace Common.Logging.Simple
 
         /// <summary>
         /// Returns <see langword="true" /> if the current <see cref="LogLevel" /> is greater than or
-        /// equal to <see cref="LogLevel.Debug" />. If it is, all messages will be sent to <see cref="Console.Out" />.
+        /// equal to <see cref="LogLevel.Debug" />. If it is, all messages will be sent to stdout
         /// </summary>
         public override bool IsDebugEnabled
         {
@@ -222,7 +222,7 @@ namespace Common.Logging.Simple
         /// Returns <see langword="true" /> if the current <see cref="LogLevel" /> is greater than or
         /// equal to <see cref="LogLevel.Info" />. If it is, only messages with a <see cref="LogLevel" /> of
         /// <see cref="LogLevel.Info" />, <see cref="LogLevel.Warn" />, <see cref="LogLevel.Error" />, and 
-        /// <see cref="LogLevel.Fatal" /> will be sent to <see cref="Console.Out" />.
+        /// <see cref="LogLevel.Fatal" /> will be sent to stdout
         /// </summary>
         public override bool IsInfoEnabled
         {
@@ -234,7 +234,7 @@ namespace Common.Logging.Simple
         /// Returns <see langword="true" /> if the current <see cref="LogLevel" /> is greater than or
         /// equal to <see cref="LogLevel.Warn" />. If it is, only messages with a <see cref="LogLevel" /> of
         /// <see cref="LogLevel.Warn" />, <see cref="LogLevel.Error" />, and <see cref="LogLevel.Fatal" /> 
-        /// will be sent to <see cref="Console.Out" />.
+        /// will be sent to stdout
         /// </summary>
         public override bool IsWarnEnabled
         {
@@ -244,7 +244,7 @@ namespace Common.Logging.Simple
         /// <summary>
         /// Returns <see langword="true" /> if the current <see cref="LogLevel" /> is greater than or
         /// equal to <see cref="LogLevel.Error" />. If it is, only messages with a <see cref="LogLevel" /> of
-        /// <see cref="LogLevel.Error" /> and <see cref="LogLevel.Fatal" /> will be sent to <see cref="Console.Out" />.
+        /// <see cref="LogLevel.Error" /> and <see cref="LogLevel.Fatal" /> will be sent to stdout
         /// </summary>
         public override bool IsErrorEnabled
         {
@@ -254,7 +254,7 @@ namespace Common.Logging.Simple
         /// <summary>
         /// Returns <see langword="true" /> if the current <see cref="LogLevel" /> is greater than or
         /// equal to <see cref="LogLevel.Fatal" />. If it is, only messages with a <see cref="LogLevel" /> of
-        /// <see cref="LogLevel.Fatal" /> will be sent to <see cref="Console.Out" />.
+        /// <see cref="LogLevel.Fatal" /> will be sent to stdout.
         /// </summary>
         public override bool IsFatalEnabled
         {

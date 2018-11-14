@@ -97,8 +97,7 @@ namespace Common.Logging.Simple
         /// </summary>
         public ILog GetLogger(string name)
         {
-            ILog logger;
-            if(!_cachedLoggers.TryGetValue(name, out logger))
+            if (!_cachedLoggers.TryGetValue(name, out ILog logger))
             {
                 lock (((ICollection)_cachedLoggers).SyncRoot)
                 {

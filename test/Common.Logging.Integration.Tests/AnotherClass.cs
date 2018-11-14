@@ -8,7 +8,9 @@ namespace Common
     {
         public void CanCompile()
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             ILog log = LogManager.GetCurrentClassLogger();
+#pragma warning restore CS0618 // Type or member is obsolete
             log.Trace(m=> m("test {0}", "test"));
         }
     }

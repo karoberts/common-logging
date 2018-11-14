@@ -251,6 +251,8 @@ namespace Common.Logging
 
 #if PORTABLE && !SILVERLIGHT && !NET20
 
+#pragma warning disable CS1574 // XML comment has cref attribute that could not be resolved
+#pragma warning disable CS1580 // Invalid type for parameter in XML comment cref attribute
         /// <summary>
         /// Gets the logger by calling <see cref="ILoggerFactoryAdapter.GetLogger(Type)"/>
         /// on the currently configured <see cref="Adapter"/> using the type of the calling class.
@@ -263,6 +265,8 @@ namespace Common.Logging
         /// <seealso cref="GetLogger(Type)"/>
         /// <returns>the logger instance obtained from the current <see cref="Adapter"/></returns>
         [Obsolete("Null-Reference Exception when dealing with Dynamic Types, Prefer instead one of the LogManager.GetLogger(...) variants.")]
+#pragma warning restore CS1580 // Invalid type for parameter in XML comment cref attribute
+#pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
         [MethodImpl(MethodImplOptions.NoInlining)]
         public static ILog GetCurrentClassLogger()
         {
@@ -271,6 +275,8 @@ namespace Common.Logging
             return Adapter.GetLogger(declaringType);
         }
 
+#pragma warning disable CS1574 // XML comment has cref attribute that could not be resolved
+#pragma warning disable CS1580 // Invalid type for parameter in XML comment cref attribute
         /// <summary>
         /// Gets the logger by calling <see cref="ILoggerFactoryAdapter.GetLogger(Type)"/>
         /// on the currently configured <see cref="Adapter"/> using the type of the calling class.
@@ -282,7 +288,8 @@ namespace Common.Logging
         /// </remarks>
         /// <seealso cref="GetLogger(Type)"/>
         /// <returns>the logger instance obtained from the current <see cref="Adapter"/></returns>
-
+#pragma warning restore CS1580 // Invalid type for parameter in XML comment cref attribute
+#pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
         [Obsolete("Null-Reference Exception when dealing with Dynamic Types, Prefer instead one of the LogManager.GetLogger(...) variants.")]
         [MethodImpl(MethodImplOptions.NoInlining)]
         ILog ILogManager.GetCurrentClassLogger()
@@ -412,44 +419,60 @@ namespace Common.Logging
         ILog ILogManager.GetCurrentClassLogger() { return GetCurrentClassLogger(); }
 #endif
 
+#pragma warning disable CS1574 // XML comment has cref attribute that could not be resolved
+#pragma warning disable CS1580 // Invalid type for parameter in XML comment cref attribute
         /// <summary>
         /// Gets the logger by calling <see cref="ILoggerFactoryAdapter.GetLogger(Type)"/>
         /// on the currently configured <see cref="Adapter"/> using the specified type.
         /// </summary>
         /// <returns>the logger instance obtained from the current <see cref="Adapter"/></returns>
+#pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
+#pragma warning restore CS1580 // Invalid type for parameter in XML comment cref attribute
         public static ILog GetLogger<T>()
         {
             return Adapter.GetLogger(typeof(T));
         }
 
+#pragma warning disable CS1574 // XML comment has cref attribute that could not be resolved
+#pragma warning disable CS1580 // Invalid type for parameter in XML comment cref attribute
         /// <summary>
         /// Gets the logger by calling <see cref="ILoggerFactoryAdapter.GetLogger(Type)"/>
         /// on the currently configured <see cref="Adapter"/> using the specified type.
         /// </summary>
         /// <returns>the logger instance obtained from the current <see cref="Adapter"/></returns>
+#pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
+#pragma warning restore CS1580 // Invalid type for parameter in XML comment cref attribute
         ILog ILogManager.GetLogger<T>()
         {
             return GetLogger<T>();
         }
 
 
+#pragma warning disable CS1574 // XML comment has cref attribute that could not be resolved
+#pragma warning disable CS1580 // Invalid type for parameter in XML comment cref attribute
         /// <summary>
         /// Gets the logger by calling <see cref="ILoggerFactoryAdapter.GetLogger(Type)"/>
         /// on the currently configured <see cref="Adapter"/> using the specified type.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>the logger instance obtained from the current <see cref="Adapter"/></returns>
+#pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
+#pragma warning restore CS1580 // Invalid type for parameter in XML comment cref attribute
         public static ILog GetLogger(Type type)
         {
             return Adapter.GetLogger(type);
         }
 
+#pragma warning disable CS1574 // XML comment has cref attribute that could not be resolved
+#pragma warning disable CS1580 // Invalid type for parameter in XML comment cref attribute
         /// <summary>
         /// Gets the logger by calling <see cref="ILoggerFactoryAdapter.GetLogger(Type)"/>
         /// on the currently configured <see cref="Adapter"/> using the specified type.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>the logger instance obtained from the current <see cref="Adapter"/></returns>
+#pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
+#pragma warning restore CS1580 // Invalid type for parameter in XML comment cref attribute
         ILog ILogManager.GetLogger(Type type)
         {
             return GetLogger(type);

@@ -16,7 +16,9 @@ namespace Common
         [Test]
 		public void CanCompile()
 		{
+#pragma warning disable CS0618 // Type or member is obsolete
             ILog log = LogManager.GetCurrentClassLogger();
+#pragma warning restore CS0618 // Type or member is obsolete
             log.Trace(CultureInfo.InvariantCulture,  m => m("test {0}", "test"), new Exception());
 		}
 	}

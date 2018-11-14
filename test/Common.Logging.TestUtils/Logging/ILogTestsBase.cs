@@ -62,7 +62,9 @@ namespace Common.Logging
             {
                 Security.PartialTrustInvoke(CompliantTrustLevelName, delegate
                  {
+#pragma warning disable CS0618 // Type or member is obsolete
                      new ReflectionPermission(ReflectionPermissionFlag.AllFlags).Demand();
+#pragma warning restore CS0618 // Type or member is obsolete
                  });
             });
         }
@@ -71,7 +73,9 @@ namespace Common.Logging
         public void LoggingWithNullParameters()
         {
             Trace.WriteLine("Executing Test " + MethodBase.GetCurrentMethod().Name);
+#pragma warning disable CS0618 // Type or member is obsolete
             ILog log = LogManager.GetCurrentClassLogger();
+#pragma warning restore CS0618 // Type or member is obsolete
 
             log.Trace((object)null);
             log.Trace((object)null, null);
@@ -108,7 +112,9 @@ namespace Common.Logging
         {
             Security.PartialTrustInvoke(CompliantTrustLevelName, delegate
                                                                      {
+#pragma warning disable CS0618 // Type or member is obsolete
                                                                          CanCallIsEnabled(LogManager.GetCurrentClassLogger());
+#pragma warning restore CS0618 // Type or member is obsolete
                                                                      });
         }
 
@@ -137,7 +143,9 @@ namespace Common.Logging
         [Test]
         public void CanLogMessageWithExceptionFromTypeLog()
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             ILog log = LogManager.GetCurrentClassLogger();
+#pragma warning restore CS0618 // Type or member is obsolete
             CanLogMessageWithException(log);
         }
 

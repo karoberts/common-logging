@@ -109,7 +109,9 @@ namespace Common.TestUtil
         /// <param name="allowUnmanagedCode">NCover requires unmangaged code permissions, set this flag <c>true</c> in this case.</param>
         public SecurityTemplate(bool allowUnmanagedCode)
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             PolicyLevel pLevel = PolicyLevel.CreateAppDomainLevel();
+#pragma warning restore CS0618 // Type or member is obsolete
 
             // NOTHING permissionset
             if (null == pLevel.GetNamedPermissionSet(PERMISSIONSET_NOTHING) )
@@ -196,7 +198,9 @@ namespace Common.TestUtil
         /// Invokes the given callback using the policy's default
         /// partial trust permissionset ("ASP.Net" <see cref="PERMISSIONSET_ASPNET"/>).
         /// </summary>
+#pragma warning disable CS0618 // Type or member is obsolete
         [SecurityTreatAsSafe, SecurityCritical]
+#pragma warning restore CS0618 // Type or member is obsolete
         public void PartialTrustInvoke(ThreadStart callback)
         {
             string defaultPermissionSetName = PERMISSIONSET_MEDIUMTRUST;
@@ -211,7 +215,9 @@ namespace Common.TestUtil
         /// <summary>
         /// Invokes the given callback using the specified permissionset.
         /// </summary>
+#pragma warning disable CS0618 // Type or member is obsolete
         [SecurityTreatAsSafe, SecurityCritical]
+#pragma warning restore CS0618 // Type or member is obsolete
         public void PartialTrustInvoke(string permissionSetName, ThreadStart callback)
         {
             PermissionSet ps = null;
@@ -324,6 +330,7 @@ namespace Common.TestUtil
                         break;
                     }
                 }
+#pragma warning disable CS0618 // Type or member is obsolete
                 if (!hasGacMembershipCondition && (rootCodeGroup is FirstMatchCodeGroup))
                 {
                     FirstMatchCodeGroup firstMatchCodeGroup = (FirstMatchCodeGroup)rootCodeGroup;
@@ -344,6 +351,7 @@ namespace Common.TestUtil
                         domainPolicy.RootCodeGroup = rootGroup;
                     }
                 }
+#pragma warning restore CS0618 // Type or member is obsolete
             }
             return domainPolicy;
         }
@@ -378,7 +386,9 @@ namespace Common.TestUtil
             {
                 foundGacToken = false;
             }
+#pragma warning disable CS0618 // Type or member is obsolete
             return SecurityManager.LoadPolicyLevelFromString(strXmlPolicy, PolicyLevelType.AppDomain);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         private static string GetPolicyFilenameExpanded(TrustLevel trustLevel)

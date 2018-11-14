@@ -17,7 +17,9 @@ namespace Common
         static TestRunner()
         {
             LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter();
+#pragma warning disable CS0618 // Type or member is obsolete
             Log = LogManager.GetCurrentClassLogger();
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         private readonly string commonLoggingVersion = string.Format("{0}", Log.GetType().Assembly.GetName().Version);

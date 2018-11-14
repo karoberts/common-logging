@@ -23,9 +23,11 @@ using Common.Logging.Configuration;
 
 namespace Common.Logging.Simple
 {
+#pragma warning disable CS1587 // XML comment is not placed on a valid language element
     /// <summary>
     /// Factory for creating <see cref="ILog" /> instances that write data using <see cref="System.Diagnostics.Debug.WriteLine(string)" />.
     /// </summary>
+#if NETFULL
     /// <remarks>
     /// <example>
     /// Below is an example how to configure this adapter:
@@ -52,11 +54,35 @@ namespace Common.Logging.Simple
     /// </code>
     /// </example>
     /// </remarks>
+#elif NETSTANDARD
+    /// <remarks>
+    /// <example>
+    /// Below is an example how to configure this adapter:
+    /// <code>
+    ///   "Common.Logging": {
+    ///     "FactoryAdapter": {
+    ///       "Type": "Common.Logging.Simple.TraceLoggerFactoryAdapter, Common.Logging",
+    ///       "Arguments": {
+    ///         "level": "DEBUG",
+    ///         "showLogName": "true",
+    ///         "showDateTime": "true",
+    ///         "dateTimeFormat": "yyyy-MM-dd HH\:mm\:ss\.fff"
+    ///       }
+    ///     }
+    ///   }   
+    /// </code>
+    /// </example>
+    /// </remarks>
+#endif
     /// <seealso cref="AbstractSimpleLoggerFactoryAdapter"/>
+#if NETFULL
+    /// <seealso cref="ConfigurationSectionHandler"/>
+#endif
     /// <author>Gilles Bayon</author>
     /// <author>Mark Pollack</author>
     /// <author>Erich Eichinger</author>
     public class DebugLoggerFactoryAdapter : AbstractSimpleLoggerFactoryAdapter
+#pragma warning restore CS1587 // XML comment is not placed on a valid language element
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DebugLoggerFactoryAdapter"/> class using default 
@@ -74,26 +100,7 @@ namespace Common.Logging.Simple
         /// <remarks>
         /// Looks for level, showDateTime, showLogName, dateTimeFormat items from 
         /// <paramref key="properties" /> for use when the GetLogger methods are called.
- #if NETSTANDARD20
-        /// use appsettings.json for using standard .NET application configuration file
-        /// to configure this adapter.
-        /// <code>
-        /// {
-        ///   "Common.Logging": {
-        ///     "FactoryAdapter": {
-        ///       "Type": "Common.Logging.Simple.TraceLoggerFactoryAdapter, Common.Logging",
-        ///       "Arguments": {
-        ///         "level": "DEBUG",
-        ///         "showLogName": "true",
-        ///         "showDateTime": "true",
-        ///         "dateTimeFormat": "yyyy-MM-dd HH\:mm\:ss\.fff"
-        ///       }
-        ///     }
-        ///   }
-        /// }
-        /// </code>
-#endif
-#if !NETSTANDARD20 || NETFULL
+#if NETFULL
         /// <see cref="System.Configuration.ConfigurationManager"/> for more information on how to use the 
         /// standard .NET application configuraiton file (App.config/Web.config) 
         /// to configure this adapter.

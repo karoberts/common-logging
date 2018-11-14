@@ -25,18 +25,22 @@ using System.Text;
 
 namespace Common.Logging.Simple
 {
-	/// <summary>
-	/// Logger sending everything to the trace output stream using <see cref="System.Diagnostics.Trace"/>.
-	/// </summary>
-	/// <remarks>
-	/// Beware not to use <see cref="CommonLoggingTraceListener"/> in combination with this logger as 
-	/// this would result in an endless loop for obvious reasons!
-	/// </remarks>
+#pragma warning disable CS1587 // XML comment is not placed on a valid language element
+    /// <summary>
+    /// Logger sending everything to the trace output stream using <see cref="System.Diagnostics.Trace"/>.
+    /// </summary>
+    /// <remarks>
+    /// Beware not to use <see cref="CommonLoggingTraceListener"/> in combination with this logger as 
+    /// this would result in an endless loop for obvious reasons!
+    /// </remarks>
     /// <seealso cref="LogManager.Adapter"/>
+#if NETFULL
     /// <seealso cref="ConfigurationSectionHandler"/>
+#endif
     /// <author>Gilles Bayon</author>
-	/// <author>Erich Eichinger</author>
+    /// <author>Erich Eichinger</author>
     [Serializable]
+#pragma warning restore CS1587 // XML comment is not placed on a valid language element
     public class TraceLogger : Simple.AbstractSimpleLogger, IDeserializationCallback
 	{
 	    private readonly bool _useTraceSource;

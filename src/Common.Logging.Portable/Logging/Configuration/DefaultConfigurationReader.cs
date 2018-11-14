@@ -19,8 +19,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
+using System.Text;
 #if NETSTANDARD20
 using Microsoft.Extensions.Configuration;
 #endif
@@ -79,25 +82,62 @@ namespace Common.Logging.Configuration
 #if NETSTANDARD20    
         private static object TryAppSettingsJson(string sectionName)
         {
-            try
+            foreach (var location in appSettingsPaths())
             {
-                var config = new ConfigurationBuilder()
-                        .SetBasePath(Directory.GetCurrentDirectory())
-                        .AddJsonFile("appsettings.json")
-                        .Build();
+                try
+                {
+                    var config = new ConfigurationBuilder()
+                            .SetBasePath(location)
+                            .AddJsonFile("appsettings.json", optional: true)
+                            .Build();
 
-                var logConfig = new LogConfiguration();
-                config.GetSection(sectionName).Bind(logConfig);
+                    var logConfig = new LogConfiguration();
+                    config.GetSection(sectionName).Bind(logConfig);
 
-                if (logConfig.FactoryAdapter != null)
-                    return new LogConfigurationReader(logConfig).GetSection(null);
+                    if (logConfig.FactoryAdapter != null)
+                        return new LogConfigurationReader(logConfig).GetSection(null);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine($"exception {e.GetType().FullName} during load of {location}/appsettings.json {e.Message}");
+                }
             }
-            catch (Exception e)
-            {
-                Debug.WriteLine($"exception {e.GetType().FullName} during load of appsettings.json {e.Message}");
-            }
 
+            Debug.WriteLine($"no appsettings.json found");
             return null;
+
+            IEnumerable<string> appSettingsPaths()
+            {
+                yield return Directory.GetCurrentDirectory();
+
+                string entryAssembly = tryGetPath(() => Assembly.GetEntryAssembly().Location, "entry assembly");
+                if (entryAssembly != null)
+                    yield return entryAssembly;
+
+                string execAssembly = tryGetPath(() => Assembly.GetExecutingAssembly().Location, "exec assembly");
+                if (execAssembly != null)
+                    yield return execAssembly;
+
+                string mainModule = tryGetPath(() => Process.GetCurrentProcess().MainModule.FileName, "main exe");
+                if (mainModule != null)
+                    yield return mainModule;
+            }
+
+            string tryGetPath(Func<string> f, string desc)
+            {
+                string loc = null;
+                try
+                {
+                    loc = Assembly.GetExecutingAssembly().Location;
+                }
+                catch (Exception e)
+                {
+                    // getting assembly locations can fail sometimes
+                    Debug.WriteLine($"exception {e.GetType().FullName} during load of {desc} {e.Message}");
+                    return null;
+                }
+                return Path.GetDirectoryName(loc);
+            }
         }
 #endif
 

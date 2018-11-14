@@ -23,10 +23,12 @@ using Common.Logging.Configuration;
 
 namespace Common.Logging.Simple
 {
+#pragma warning disable CS1587 // XML comment is not placed on a valid language element
     /// <summary>
     /// Factory for creating <see cref="ILog" /> instances that silently ignores
     /// logging requests.
     /// </summary>
+#if NETFULL
     /// <remarks>
     /// This logger adapter is the default used by Common.Logging if unconfigured. Using this logger adapter is the most efficient
     /// way to suppress any logging output.
@@ -55,8 +57,28 @@ namespace Common.Logging.Simple
     /// </code>
     /// </example>
     /// </remarks>
+#elif NETSTANDARD
+    /// <remarks>
+    /// This logger adapter is the default used by Common.Logging if unconfigured. Using this logger adapter is the most efficient
+    /// way to suppress any logging output.
+    /// <example>
+    /// Below is an example how to configure this adapter:
+    /// <code>
+    ///   "Common.Logging": {
+    ///     "FactoryAdapter": {
+    ///       "Type": "Common.Logging.Simple.NoOpLoggerFactoryAdapter, Common.Logging",
+    ///       "Arguments": {
+    ///         "level": "ALL"
+    ///       }
+    ///     }
+    ///   }   
+    /// </code>
+    /// </example>
+    /// </remarks>
+#endif
     /// <author>Gilles Bayon</author>
     public sealed class NoOpLoggerFactoryAdapter : ILoggerFactoryAdapter
+#pragma warning restore CS1587 // XML comment is not placed on a valid language element
     {
         private static readonly ILog s_nopLogger = new NoOpLogger();
 

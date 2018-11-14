@@ -40,7 +40,9 @@ namespace Common.Logging.Simple
         [Test]
         public void AssertDefaultSettings()
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             ILog log = LogManager.GetCurrentClassLogger();
+#pragma warning restore CS0618 // Type or member is obsolete
 
             Assert.IsNotNull(log);
             Assert.IsInstanceOf<ConsoleOutLogger>(log);

@@ -38,7 +38,9 @@ namespace Common.Logging
         [Test]
         public void ErrorNotThrownWhenLoggedExceptionHasIndexerProperty()
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             ILog log = LogManager.GetCurrentClassLogger();
+#pragma warning restore CS0618 // Type or member is obsolete
             ExceptionWithIndexerException exception = new ExceptionWithIndexerException();
             Assert.That(() => log.Error("error catched", exception), Throws.Nothing);
         }

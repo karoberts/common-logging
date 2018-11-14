@@ -23,9 +23,11 @@ using Common.Logging.Configuration;
 
 namespace Common.Logging.Simple
 {
+#pragma warning disable CS1587 // XML comment is not placed on a valid language element
     /// <summary>
     /// Factory for creating <see cref="ILog" /> instances that write data to <see cref="Console.Out" />.
     /// </summary>
+#if NETFULL
     /// <remarks>
     /// <example>
     /// Below is an example how to configure this adapter:
@@ -52,17 +54,36 @@ namespace Common.Logging.Simple
     /// </code>
     /// </example>
     /// </remarks>
+#elif NETSTANDARD
+    /// <remarks>
+    /// <example>
+    /// Below is an example how to configure this adapter:
+    /// <code>
+    ///   "Common.Logging": {
+    ///     "FactoryAdapter": {
+    ///       "Type": "Common.Logging.Simple.ConsoleOutLoggerFactoryAdapter, Common.Logging",
+    ///       "Arguments": {
+    ///         "Level": "ALL"
+    ///       }
+    ///     }
+    ///   }   
+    /// </code>
+    /// </example>
+    /// </remarks>
+#endif
     /// <seealso cref="AbstractSimpleLoggerFactoryAdapter"/>
     /// <seealso cref="LogManager.Adapter"/>
+#if NETFULL
     /// <seealso cref="ConfigurationSectionHandler"/>
+#endif
     /// <author>Gilles Bayon</author>
     /// <author>Mark Pollack</author>
     /// <author>Erich Eichinger</author>
     public class ConsoleOutLoggerFactoryAdapter : Simple.AbstractSimpleLoggerFactoryAdapter
+#pragma warning restore CS1587 // XML comment is not placed on a valid language element
     {
 #if !SILVERLIGHT
         private readonly bool useColor;
-
 #endif
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsoleOutLoggerFactoryAdapter"/> class using default 
@@ -72,19 +93,25 @@ namespace Common.Logging.Simple
             : base(null)
         { }
 
+#pragma warning disable CS1587 // XML comment is not placed on a valid language element
+#pragma warning disable CS1570 // XML comment has badly formed XML
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsoleOutLoggerFactoryAdapter"/> class.
         /// </summary>
         /// <remarks>
         /// Looks for level, showDateTime, showLogName, dateTimeFormat items from 
         /// <paramref name="properties" /> for use when the GetLogger methods are called.
+#if NETFULL
         /// <see cref="ConfigurationSectionHandler"/> for more information on how to use the 
         /// standard .NET application configuraiton file (App.config/Web.config) 
         /// to configure this adapter.
+#endif
         /// </remarks>
         /// <param name="properties">The name value collection, typically specified by the user in 
         /// a configuration section named common/logging.</param>
         public ConsoleOutLoggerFactoryAdapter(NameValueCollection properties)
+#pragma warning restore CS1570 // XML comment has badly formed XML
+#pragma warning restore CS1587 // XML comment is not placed on a valid language element
             : base(properties)
         { }
 

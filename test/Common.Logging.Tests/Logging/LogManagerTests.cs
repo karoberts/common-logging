@@ -248,7 +248,9 @@ namespace Common.Logging
         public void GetCurrentClassLoggerUsesCorrectType()
         {
             LogManager.Adapter = new ConsoleOutLoggerFactoryAdapter();
+#pragma warning disable CS0618 // Type or member is obsolete
             ConsoleOutLogger log = (ConsoleOutLogger)LogManager.GetCurrentClassLogger();
+#pragma warning restore CS0618 // Type or member is obsolete
             Assert.AreEqual(this.GetType().FullName, log.Name);
         }
 
