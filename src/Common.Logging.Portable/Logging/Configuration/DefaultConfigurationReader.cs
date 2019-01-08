@@ -80,55 +80,113 @@ namespace Common.Logging.Configuration
         }
 
 #if NETSTANDARD20    
+
+        /// <summary>
+        /// Probe for appsettings.json
+        /// </summary>
+        /// <returns>a tuple of the paths searched and the one where it was found (or null)</returns>
+        public static (List<string> searched, string found) ProbeForAppSettings()
+        {
+            var searched = new List<string>();
+            foreach (var location in AppSettingsPaths())
+            {
+                searched.Add(location);
+                if (Directory.GetFiles(location, "appsettings.json").Length == 1)
+                    return (searched, Path.Combine(location, "appsettings.json"));
+            }
+
+            foreach (var location in AppSettingsPaths())
+            {
+                var dir = Directory.GetParent(location);
+                while (dir != null)
+                {
+                    searched.Add(dir.FullName);
+                    if (Directory.GetFiles(dir.FullName, "appsettings.json").Length == 1)
+                        return (searched, Path.Combine(dir.FullName, "appsettings.json"));
+                    dir = dir.Parent;
+                }
+            }
+
+            return (searched, null);
+        }
+
         private static object TryAppSettingsJson(string sectionName)
         {
-            foreach (var location in appSettingsPaths())
+            foreach (var location in AppSettingsPaths())
             {
-                try
-                {
-                    var config = new ConfigurationBuilder()
-                            .SetBasePath(location)
-                            .AddJsonFile("appsettings.json", optional: true)
-                            .Build();
+                var ret = TryLoad(location, sectionName);
+                if (ret != null)
+                    return ret;
+            }
 
-                    var logConfig = new LogConfiguration();
-                    config.GetSection(sectionName).Bind(logConfig);
-
-                    if (logConfig.FactoryAdapter != null)
-                        return new LogConfigurationReader(logConfig).GetSection(null);
-                }
-                catch (Exception e)
+            foreach (var location in AppSettingsPaths())
+            {
+                var dir = Directory.GetParent(location);
+                while (dir != null)
                 {
-                    Debug.WriteLine($"exception {e.GetType().FullName} during load of {location}/appsettings.json {e.Message}");
+                    if (dir.GetFiles("appsettings.json").Length == 1)
+                    {
+                        var ret = TryLoad(dir.FullName, sectionName);
+                        if (ret != null)
+                            return ret;
+                    }
+                    dir = dir.Parent;
                 }
             }
 
             Debug.WriteLine($"no appsettings.json found");
             return null;
+        }
 
-            IEnumerable<string> appSettingsPaths()
+        private static object TryLoad(string location, string sectionName)
+        {
+            try
             {
-                yield return Directory.GetCurrentDirectory();
+                var config = new ConfigurationBuilder()
+                        .SetBasePath(location)
+                        .AddJsonFile("appsettings.json", optional: true)
+                        .Build();
 
-                string entryAssembly = tryGetPath(() => Assembly.GetEntryAssembly().Location, "entry assembly");
-                if (entryAssembly != null)
-                    yield return entryAssembly;
+                var logConfig = new LogConfiguration();
+                config.GetSection(sectionName).Bind(logConfig);
 
-                string execAssembly = tryGetPath(() => Assembly.GetExecutingAssembly().Location, "exec assembly");
-                if (execAssembly != null)
-                    yield return execAssembly;
-
-                string mainModule = tryGetPath(() => Process.GetCurrentProcess().MainModule.FileName, "main exe");
-                if (mainModule != null)
-                    yield return mainModule;
+                if (logConfig.FactoryAdapter != null)
+                    return new LogConfigurationReader(logConfig).GetSection(null);
             }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"exception {e.GetType().FullName} during load of {location}/appsettings.json {e.Message}");
+            }
+
+            return null;
+        }
+
+        private static IEnumerable<string> AppSettingsPaths()
+        {
+            string basePath = tryGetPath(() => AppContext.BaseDirectory, "base directory");
+            if (basePath != null)
+                yield return basePath;
+
+            string entryAssembly = tryGetPath(() => Assembly.GetEntryAssembly().Location, "entry assembly");
+            if (entryAssembly != null)
+                yield return entryAssembly;
+
+            string execAssembly = tryGetPath(() => Assembly.GetExecutingAssembly().Location, "exec assembly");
+            if (execAssembly != null)
+                yield return execAssembly;
+
+            string mainModule = tryGetPath(() => Process.GetCurrentProcess().MainModule.FileName, "main exe");
+            if (mainModule != null)
+                yield return mainModule;
+
+            yield return Directory.GetCurrentDirectory();
 
             string tryGetPath(Func<string> f, string desc)
             {
                 string loc = null;
                 try
                 {
-                    loc = Assembly.GetExecutingAssembly().Location;
+                    loc = f();
                 }
                 catch (Exception e)
                 {
