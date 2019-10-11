@@ -6,9 +6,9 @@
     <Copyright>(c) 2006-2018 the Common Infrastructure Libraries Team. (+NTERSOL)</Copyright>
     <Product>Common.Logging.NLog45 (NTERSOL)</Product>
     <Description>Common.Logging.Core (netstandard) (NTERSOL)</Description>
-    <Version>3.4.1.3</Version>
-    <AssemblyVersion>3.4.1.3</AssemblyVersion>
-    <FileVersion>3.4.1.3</FileVersion>
+    <Version>3.4.1.4</Version>
+    <AssemblyVersion>3.4.1.4</AssemblyVersion>
+    <FileVersion>3.4.1.4</FileVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../../NTERSOL.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
@@ -51,7 +51,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.5.11" />
+    <PackageReference Include="NLog" Version="4.6.7" />
   </ItemGroup>
   
   <ItemGroup>
