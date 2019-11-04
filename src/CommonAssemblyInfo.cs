@@ -17,7 +17,7 @@ using System.Security.Permissions;
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: CLSCompliantAttribute(true)]
+[assembly: CLSCompliantAttribute(false)]
 
 #if !NETSTANDARD
 
