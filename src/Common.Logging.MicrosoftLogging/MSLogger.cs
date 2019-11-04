@@ -89,11 +89,7 @@ namespace Common.Logging.MicrosoftLogging
         /// Log a message object with the <see cref="LogLevel.Trace"/> level.
         /// </summary>
         /// <param name="message">The message object to log.</param>
-        public override void Trace(object message)
-        {
-            if (IsTraceEnabled)
-                WriteInternal(LogLevel.Trace, message, null);
-        }
+        public override void Trace(object message) => Trace(message, null);
 
         /// <summary>
         /// Log a message object with the <see cref="LogLevel.Trace"/> level including
@@ -105,7 +101,7 @@ namespace Common.Logging.MicrosoftLogging
         public override void Trace(object message, Exception exception)
         {
             if (IsTraceEnabled)
-                WriteInternal(LogLevel.Trace, message, exception);
+                _WriteInternal(LogLevel.Trace, message, exception, null);
         }
 
         /// <summary>
@@ -114,11 +110,7 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="formatProvider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information.</param>
         /// <param name="format">The format of the message object to log.<see cref="string.Format(string,object[])"/> </param>
         /// <param name="args"></param>
-        public override void TraceFormat(IFormatProvider formatProvider, string format, params object[] args)
-        {
-            if (IsTraceEnabled)
-                WriteInternal(LogLevel.Trace, new StringFormatFormattedMessage(formatProvider, format, args), null);
-        }
+        public override void TraceFormat(IFormatProvider formatProvider, string format, params object[] args) => TraceFormat(format, null, args);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Trace"/> level.
@@ -127,22 +119,14 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="format">The format of the message object to log.<see cref="string.Format(string,object[])"/> </param>
         /// <param name="exception">The exception to log.</param>
         /// <param name="args"></param>
-        public override void TraceFormat(IFormatProvider formatProvider, string format, Exception exception, params object[] args)
-        {
-            if (IsTraceEnabled)
-                WriteInternal(LogLevel.Trace, new StringFormatFormattedMessage(formatProvider, format, args), exception);
-        }
+        public override void TraceFormat(IFormatProvider formatProvider, string format, Exception exception, params object[] args) => TraceFormat(format, exception, args);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Trace"/> level.
         /// </summary>
         /// <param name="format">The format of the message object to log.<see cref="string.Format(string,object[])"/> </param>
         /// <param name="args">the list of format arguments</param>
-        public override void TraceFormat(string format, params object[] args)
-        {
-            if (IsTraceEnabled)
-                WriteInternal(LogLevel.Trace, new StringFormatFormattedMessage(null, format, args), null);
-        }
+        public override void TraceFormat(string format, params object[] args) => TraceFormat(format, null, args);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Trace"/> level.
@@ -153,7 +137,7 @@ namespace Common.Logging.MicrosoftLogging
         public new virtual void TraceFormat(string format, Exception exception, params object[] args)
         {
             if (IsTraceEnabled)
-                WriteInternal(LogLevel.Trace, new StringFormatFormattedMessage(null, format, args), exception);
+                _WriteInternal(LogLevel.Trace, format, exception, args);
         }
 
         /// <summary>
@@ -164,11 +148,7 @@ namespace Common.Logging.MicrosoftLogging
         /// that probably won't be logged due to loglevel settings.
         /// </remarks>
         /// <param name="formatMessageCallback">A callback used by the logger to obtain the message if log level is matched</param>
-        public override void Trace(FormatMessageCallback formatMessageCallback)
-        {
-            if (IsTraceEnabled)
-                WriteInternal(LogLevel.Trace, new FormatMessageCallbackFormattedMessage(formatMessageCallback), null);
-        }
+        public override void Trace(FormatMessageCallback formatMessageCallback) => Trace(formatMessageCallback, null);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Trace"/> level using a callback to obtain the message
@@ -181,8 +161,20 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="exception">The exception to log, including its stack trace.</param>
         public override void Trace(FormatMessageCallback formatMessageCallback, Exception exception)
         {
+            string _fmt = null;
+            object[] _args = null;
             if (IsTraceEnabled)
-                WriteInternal(LogLevel.Trace, new FormatMessageCallbackFormattedMessage(formatMessageCallback), exception);
+            {
+                formatMessageCallback(f);
+                _WriteInternal(LogLevel.Trace, _fmt, exception, _args);
+            }
+
+            string f(string fmt, object[] args)
+            {
+                _fmt = fmt;
+                _args = args;
+                return string.Empty;
+            }
         }
 
         /// <summary>
@@ -194,11 +186,7 @@ namespace Common.Logging.MicrosoftLogging
         /// </remarks>
         /// <param name="formatProvider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information.</param>
         /// <param name="formatMessageCallback">A callback used by the logger to obtain the message if log level is matched</param>
-        public override void Trace(IFormatProvider formatProvider, FormatMessageCallback formatMessageCallback)
-        {
-            if (IsTraceEnabled)
-                WriteInternal(LogLevel.Trace, new FormatMessageCallbackFormattedMessage(formatProvider, formatMessageCallback), null);
-        }
+        public override void Trace(IFormatProvider formatProvider, FormatMessageCallback formatMessageCallback) => Trace(formatMessageCallback, null);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Trace"/> level using a callback to obtain the message
@@ -210,11 +198,7 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="formatProvider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information.</param>
         /// <param name="formatMessageCallback">A callback used by the logger to obtain the message if log level is matched</param>
         /// <param name="exception">The exception to log, including its stack trace.</param>
-        public override void Trace(IFormatProvider formatProvider, FormatMessageCallback formatMessageCallback, Exception exception)
-        {
-            if (IsTraceEnabled)
-                WriteInternal(LogLevel.Trace, new FormatMessageCallbackFormattedMessage(formatProvider, formatMessageCallback), exception);
-        }
+        public override void Trace(IFormatProvider formatProvider, FormatMessageCallback formatMessageCallback, Exception exception) => Trace(formatMessageCallback, exception);
 
         #endregion
 
@@ -224,11 +208,7 @@ namespace Common.Logging.MicrosoftLogging
         /// Log a message object with the <see cref="LogLevel.Debug"/> level.
         /// </summary>
         /// <param name="message">The message object to log.</param>
-        public override void Debug(object message)
-        {
-            if (IsDebugEnabled)
-                WriteInternal(LogLevel.Debug, message, null);
-        }
+        public override void Debug(object message) => Debug(message, null);
 
         /// <summary>
         /// Log a message object with the <see cref="LogLevel.Debug"/> level including
@@ -240,7 +220,7 @@ namespace Common.Logging.MicrosoftLogging
         public override void Debug(object message, Exception exception)
         {
             if (IsDebugEnabled)
-                WriteInternal(LogLevel.Debug, message, exception);
+                _WriteInternal(LogLevel.Debug, message, exception, null);
         }
 
         /// <summary>
@@ -249,11 +229,7 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="formatProvider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information.</param>
         /// <param name="format">The format of the message object to log.<see cref="string.Format(string,object[])"/> </param>
         /// <param name="args"></param>
-        public override void DebugFormat(IFormatProvider formatProvider, string format, params object[] args)
-        {
-            if (IsDebugEnabled)
-                WriteInternal(LogLevel.Debug, new StringFormatFormattedMessage(formatProvider, format, args), null);
-        }
+        public override void DebugFormat(IFormatProvider formatProvider, string format, params object[] args) => DebugFormat(format, null, args);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Debug"/> level.
@@ -262,22 +238,14 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="format">The format of the message object to log.<see cref="string.Format(string,object[])"/> </param>
         /// <param name="exception">The exception to log.</param>
         /// <param name="args"></param>
-        public override void DebugFormat(IFormatProvider formatProvider, string format, Exception exception, params object[] args)
-        {
-            if (IsDebugEnabled)
-                WriteInternal(LogLevel.Debug, new StringFormatFormattedMessage(formatProvider, format, args), exception);
-        }
+        public override void DebugFormat(IFormatProvider formatProvider, string format, Exception exception, params object[] args) => DebugFormat(format, exception, args);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Debug"/> level.
         /// </summary>
         /// <param name="format">The format of the message object to log.<see cref="string.Format(string,object[])"/> </param>
         /// <param name="args">the list of format arguments</param>
-        public override void DebugFormat(string format, params object[] args)
-        {
-            if (IsDebugEnabled)
-                WriteInternal(LogLevel.Debug, new StringFormatFormattedMessage(null, format, args), null);
-        }
+        public override void DebugFormat(string format, params object[] args) => DebugFormat(format, null, args);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Debug"/> level.
@@ -288,7 +256,7 @@ namespace Common.Logging.MicrosoftLogging
         public override void DebugFormat(string format, Exception exception, params object[] args)
         {
             if (IsDebugEnabled)
-                WriteInternal(LogLevel.Debug, new StringFormatFormattedMessage(null, format, args), exception);
+                _WriteInternal(LogLevel.Debug, format, exception, args);
         }
 
         /// <summary>
@@ -300,10 +268,7 @@ namespace Common.Logging.MicrosoftLogging
         /// </remarks>
         /// <param name="formatMessageCallback">A callback used by the logger to obtain the message if log level is matched</param>
         public override void Debug(FormatMessageCallback formatMessageCallback)
-        {
-            if (IsDebugEnabled)
-                WriteInternal(LogLevel.Debug, new FormatMessageCallbackFormattedMessage(formatMessageCallback), null);
-        }
+            => Debug(null, formatMessageCallback, null);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Debug"/> level using a callback to obtain the message
@@ -315,10 +280,7 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="formatMessageCallback">A callback used by the logger to obtain the message if log level is matched</param>
         /// <param name="exception">The exception to log, including its stack Debug.</param>
         public override void Debug(FormatMessageCallback formatMessageCallback, Exception exception)
-        {
-            if (IsDebugEnabled)
-                WriteInternal(LogLevel.Debug, new FormatMessageCallbackFormattedMessage(formatMessageCallback), exception);
-        }
+            => Debug(null, formatMessageCallback, exception);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Debug"/> level using a callback to obtain the message
@@ -330,10 +292,7 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="formatProvider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information.</param>
         /// <param name="formatMessageCallback">A callback used by the logger to obtain the message if log level is matched</param>
         public override void Debug(IFormatProvider formatProvider, FormatMessageCallback formatMessageCallback)
-        {
-            if (IsDebugEnabled)
-                WriteInternal(LogLevel.Debug, new FormatMessageCallbackFormattedMessage(formatProvider, formatMessageCallback), null);
-        }
+            => Debug(null, formatMessageCallback, null);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Debug"/> level using a callback to obtain the message
@@ -347,8 +306,20 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="exception">The exception to log, including its stack Debug.</param>
         public override void Debug(IFormatProvider formatProvider, FormatMessageCallback formatMessageCallback, Exception exception)
         {
-            if (IsDebugEnabled)
-                WriteInternal(LogLevel.Debug, new FormatMessageCallbackFormattedMessage(formatProvider, formatMessageCallback), exception);
+            string _fmt = null;
+            object[] _args = null;
+            if (IsTraceEnabled)
+            {
+                formatMessageCallback(f);
+                _WriteInternal(LogLevel.Debug, _fmt, exception, _args);
+            }
+
+            string f(string fmt, object[] args)
+            {
+                _fmt = fmt;
+                _args = args;
+                return string.Empty;
+            }
         }
 
         #endregion
@@ -359,11 +330,7 @@ namespace Common.Logging.MicrosoftLogging
         /// Log a message object with the <see cref="LogLevel.Info"/> level.
         /// </summary>
         /// <param name="message">The message object to log.</param>
-        public override void Info(object message)
-        {
-            if (IsInfoEnabled)
-                WriteInternal(LogLevel.Info, message, null);
-        }
+        public override void Info(object message) => Info(message, null);
 
         /// <summary>
         /// Log a message object with the <see cref="LogLevel.Info"/> level including
@@ -375,7 +342,7 @@ namespace Common.Logging.MicrosoftLogging
         public override void Info(object message, Exception exception)
         {
             if (IsInfoEnabled)
-                WriteInternal(LogLevel.Info, message, exception);
+                _WriteInternal(LogLevel.Info, message, exception, null);
         }
 
         /// <summary>
@@ -385,10 +352,7 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="format">The format of the message object to log.<see cref="string.Format(string,object[])"/> </param>
         /// <param name="args"></param>
         public override void InfoFormat(IFormatProvider formatProvider, string format, params object[] args)
-        {
-            if (IsInfoEnabled)
-                WriteInternal(LogLevel.Info, new StringFormatFormattedMessage(formatProvider, format, args), null);
-        }
+             => InfoFormat(format, null, args);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Info"/> level.
@@ -398,21 +362,14 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="exception">The exception to log.</param>
         /// <param name="args"></param>
         public override void InfoFormat(IFormatProvider formatProvider, string format, Exception exception, params object[] args)
-        {
-            if (IsInfoEnabled)
-                WriteInternal(LogLevel.Info, new StringFormatFormattedMessage(formatProvider, format, args), exception);
-        }
+             => InfoFormat(format, exception, args);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Info"/> level.
         /// </summary>
         /// <param name="format">The format of the message object to log.<see cref="string.Format(string,object[])"/> </param>
         /// <param name="args">the list of format arguments</param>
-        public override void InfoFormat(string format, params object[] args)
-        {
-            if (IsInfoEnabled)
-                WriteInternal(LogLevel.Info, new StringFormatFormattedMessage(null, format, args), null);
-        }
+        public override void InfoFormat(string format, params object[] args) => InfoFormat(format, null, args);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Info"/> level.
@@ -423,7 +380,7 @@ namespace Common.Logging.MicrosoftLogging
         public override void InfoFormat(string format, Exception exception, params object[] args)
         {
             if (IsInfoEnabled)
-                WriteInternal(LogLevel.Info, new StringFormatFormattedMessage(null, format, args), exception);
+                _WriteInternal(LogLevel.Info, format, exception, args);
         }
 
         /// <summary>
@@ -434,11 +391,7 @@ namespace Common.Logging.MicrosoftLogging
         /// that probably won't be logged due to loglevel settings.
         /// </remarks>
         /// <param name="formatMessageCallback">A callback used by the logger to obtain the message if log level is matched</param>
-        public override void Info(FormatMessageCallback formatMessageCallback)
-        {
-            if (IsInfoEnabled)
-                WriteInternal(LogLevel.Info, new FormatMessageCallbackFormattedMessage(formatMessageCallback), null);
-        }
+        public override void Info(FormatMessageCallback formatMessageCallback) => Info(null, formatMessageCallback, null);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Info"/> level using a callback to obtain the message
@@ -450,10 +403,7 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="formatMessageCallback">A callback used by the logger to obtain the message if log level is matched</param>
         /// <param name="exception">The exception to log, including its stack Info.</param>
         public override void Info(FormatMessageCallback formatMessageCallback, Exception exception)
-        {
-            if (IsInfoEnabled)
-                WriteInternal(LogLevel.Info, new FormatMessageCallbackFormattedMessage(formatMessageCallback), exception);
-        }
+            => Info(null, formatMessageCallback, exception);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Info"/> level using a callback to obtain the message
@@ -465,10 +415,7 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="formatProvider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information.</param>
         /// <param name="formatMessageCallback">A callback used by the logger to obtain the message if log level is matched</param>
         public override void Info(IFormatProvider formatProvider, FormatMessageCallback formatMessageCallback)
-        {
-            if (IsInfoEnabled)
-                WriteInternal(LogLevel.Info, new FormatMessageCallbackFormattedMessage(formatProvider, formatMessageCallback), null);
-        }
+            => Info(null, formatMessageCallback, null);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Info"/> level using a callback to obtain the message
@@ -482,8 +429,20 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="exception">The exception to log, including its stack Info.</param>
         public override void Info(IFormatProvider formatProvider, FormatMessageCallback formatMessageCallback, Exception exception)
         {
-            if (IsInfoEnabled)
-                WriteInternal(LogLevel.Info, new FormatMessageCallbackFormattedMessage(formatProvider, formatMessageCallback), exception);
+            string _fmt = null;
+            object[] _args = null;
+            if (IsTraceEnabled)
+            {
+                formatMessageCallback(f);
+                _WriteInternal(LogLevel.Info, _fmt, exception, _args);
+            }
+
+            string f(string fmt, object[] args)
+            {
+                _fmt = fmt;
+                _args = args;
+                return string.Empty;
+            }
         }
 
         #endregion
@@ -494,11 +453,7 @@ namespace Common.Logging.MicrosoftLogging
         /// Log a message object with the <see cref="LogLevel.Warn"/> level.
         /// </summary>
         /// <param name="message">The message object to log.</param>
-        public override void Warn(object message)
-        {
-            if (IsWarnEnabled)
-                WriteInternal(LogLevel.Warn, message, null);
-        }
+        public override void Warn(object message) => Warn(message, null);
 
         /// <summary>
         /// Log a message object with the <see cref="LogLevel.Warn"/> level including
@@ -510,7 +465,7 @@ namespace Common.Logging.MicrosoftLogging
         public override void Warn(object message, Exception exception)
         {
             if (IsWarnEnabled)
-                WriteInternal(LogLevel.Warn, message, exception);
+                _WriteInternal(LogLevel.Warn, message, exception, null);
         }
 
         /// <summary>
@@ -520,10 +475,7 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="format">The format of the message object to log.<see cref="string.Format(string,object[])"/> </param>
         /// <param name="args"></param>
         public override void WarnFormat(IFormatProvider formatProvider, string format, params object[] args)
-        {
-            if (IsWarnEnabled)
-                WriteInternal(LogLevel.Warn, new StringFormatFormattedMessage(formatProvider, format, args), null);
-        }
+            => WarnFormat(format, null, args);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Warn"/> level.
@@ -533,10 +485,7 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="exception">The exception to log.</param>
         /// <param name="args"></param>
         public override void WarnFormat(IFormatProvider formatProvider, string format, Exception exception, params object[] args)
-        {
-            if (IsWarnEnabled)
-                WriteInternal(LogLevel.Warn, new StringFormatFormattedMessage(formatProvider, format, args), exception);
-        }
+            => WarnFormat(format, exception, args);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Warn"/> level.
@@ -544,10 +493,7 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="format">The format of the message object to log.<see cref="string.Format(string,object[])"/> </param>
         /// <param name="args">the list of format arguments</param>
         public override void WarnFormat(string format, params object[] args)
-        {
-            if (IsWarnEnabled)
-                WriteInternal(LogLevel.Warn, new StringFormatFormattedMessage(null, format, args), null);
-        }
+            => WarnFormat(format, null, args);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Warn"/> level.
@@ -558,7 +504,7 @@ namespace Common.Logging.MicrosoftLogging
         public override void WarnFormat(string format, Exception exception, params object[] args)
         {
             if (IsWarnEnabled)
-                WriteInternal(LogLevel.Warn, new StringFormatFormattedMessage(null, format, args), exception);
+                _WriteInternal(LogLevel.Warn, format, exception, args);
         }
 
         /// <summary>
@@ -570,10 +516,7 @@ namespace Common.Logging.MicrosoftLogging
         /// </remarks>
         /// <param name="formatMessageCallback">A callback used by the logger to obtain the message if log level is matched</param>
         public override void Warn(FormatMessageCallback formatMessageCallback)
-        {
-            if (IsWarnEnabled)
-                WriteInternal(LogLevel.Warn, new FormatMessageCallbackFormattedMessage(formatMessageCallback), null);
-        }
+            => Warn(null, formatMessageCallback, null);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Warn"/> level using a callback to obtain the message
@@ -585,10 +528,7 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="formatMessageCallback">A callback used by the logger to obtain the message if log level is matched</param>
         /// <param name="exception">The exception to log, including its stack Warn.</param>
         public override void Warn(FormatMessageCallback formatMessageCallback, Exception exception)
-        {
-            if (IsWarnEnabled)
-                WriteInternal(LogLevel.Warn, new FormatMessageCallbackFormattedMessage(formatMessageCallback), exception);
-        }
+            => Warn(null, formatMessageCallback, exception);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Warn"/> level using a callback to obtain the message
@@ -600,10 +540,7 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="formatProvider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information.</param>
         /// <param name="formatMessageCallback">A callback used by the logger to obtain the message if log level is matched</param>
         public override void Warn(IFormatProvider formatProvider, FormatMessageCallback formatMessageCallback)
-        {
-            if (IsWarnEnabled)
-                WriteInternal(LogLevel.Warn, new FormatMessageCallbackFormattedMessage(formatProvider, formatMessageCallback), null);
-        }
+            => Warn(formatProvider, formatMessageCallback, null);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Warn"/> level using a callback to obtain the message
@@ -617,8 +554,20 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="exception">The exception to log, including its stack Warn.</param>
         public override void Warn(IFormatProvider formatProvider, FormatMessageCallback formatMessageCallback, Exception exception)
         {
-            if (IsWarnEnabled)
-                WriteInternal(LogLevel.Warn, new FormatMessageCallbackFormattedMessage(formatProvider, formatMessageCallback), exception);
+            string _fmt = null;
+            object[] _args = null;
+            if (IsTraceEnabled)
+            {
+                formatMessageCallback(f);
+                _WriteInternal(LogLevel.Warn, _fmt, exception, _args);
+            }
+
+            string f(string fmt, object[] args)
+            {
+                _fmt = fmt;
+                _args = args;
+                return string.Empty;
+            }
         }
 
         #endregion
@@ -629,11 +578,7 @@ namespace Common.Logging.MicrosoftLogging
         /// Log a message object with the <see cref="LogLevel.Error"/> level.
         /// </summary>
         /// <param name="message">The message object to log.</param>
-        public override void Error(object message)
-        {
-            if (IsErrorEnabled)
-                WriteInternal(LogLevel.Error, message, null);
-        }
+        public override void Error(object message) => Error(message, null);
 
         /// <summary>
         /// Log a message object with the <see cref="LogLevel.Error"/> level including
@@ -645,7 +590,7 @@ namespace Common.Logging.MicrosoftLogging
         public override void Error(object message, Exception exception)
         {
             if (IsErrorEnabled)
-                WriteInternal(LogLevel.Error, message, exception);
+                _WriteInternal(LogLevel.Error, message, exception, null);
         }
 
         /// <summary>
@@ -654,11 +599,7 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="formatProvider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting Errorrmation.</param>
         /// <param name="format">The format of the message object to log.<see cref="string.Format(string,object[])"/> </param>
         /// <param name="args"></param>
-        public override void ErrorFormat(IFormatProvider formatProvider, string format, params object[] args)
-        {
-            if (IsErrorEnabled)
-                WriteInternal(LogLevel.Error, new StringFormatFormattedMessage(formatProvider, format, args), null);
-        }
+        public override void ErrorFormat(IFormatProvider formatProvider, string format, params object[] args) => ErrorFormat(format, null, args);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Error"/> level.
@@ -667,22 +608,14 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="format">The format of the message object to log.<see cref="string.Format(string,object[])"/> </param>
         /// <param name="exception">The exception to log.</param>
         /// <param name="args"></param>
-        public override void ErrorFormat(IFormatProvider formatProvider, string format, Exception exception, params object[] args)
-        {
-            if (IsErrorEnabled)
-                WriteInternal(LogLevel.Error, new StringFormatFormattedMessage(formatProvider, format, args), exception);
-        }
+        public override void ErrorFormat(IFormatProvider formatProvider, string format, Exception exception, params object[] args) => ErrorFormat(format, exception, args);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Error"/> level.
         /// </summary>
         /// <param name="format">The format of the message object to log.<see cref="string.Format(string,object[])"/> </param>
         /// <param name="args">the list of format arguments</param>
-        public override void ErrorFormat(string format, params object[] args)
-        {
-            if (IsErrorEnabled)
-                WriteInternal(LogLevel.Error, new StringFormatFormattedMessage(null, format, args), null);
-        }
+        public override void ErrorFormat(string format, params object[] args) => ErrorFormat(format, null, args);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Error"/> level.
@@ -693,7 +626,7 @@ namespace Common.Logging.MicrosoftLogging
         public override void ErrorFormat(string format, Exception exception, params object[] args)
         {
             if (IsErrorEnabled)
-                WriteInternal(LogLevel.Error, new StringFormatFormattedMessage(null, format, args), exception);
+                _WriteInternal(LogLevel.Error, format, exception, args);
         }
 
         /// <summary>
@@ -705,10 +638,7 @@ namespace Common.Logging.MicrosoftLogging
         /// </remarks>
         /// <param name="formatMessageCallback">A callback used by the logger to obtain the message if log level is matched</param>
         public override void Error(FormatMessageCallback formatMessageCallback)
-        {
-            if (IsErrorEnabled)
-                WriteInternal(LogLevel.Error, new FormatMessageCallbackFormattedMessage(formatMessageCallback), null);
-        }
+            => Error(null, formatMessageCallback, null);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Error"/> level using a callback to obtain the message
@@ -720,10 +650,7 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="formatMessageCallback">A callback used by the logger to obtain the message if log level is matched</param>
         /// <param name="exception">The exception to log, including its stack Error.</param>
         public override void Error(FormatMessageCallback formatMessageCallback, Exception exception)
-        {
-            if (IsErrorEnabled)
-                WriteInternal(LogLevel.Error, new FormatMessageCallbackFormattedMessage(formatMessageCallback), exception);
-        }
+            => Error(null, formatMessageCallback, exception);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Error"/> level using a callback to obtain the message
@@ -735,10 +662,7 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="formatProvider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information.</param>
         /// <param name="formatMessageCallback">A callback used by the logger to obtain the message if log level is matched</param>
         public override void Error(IFormatProvider formatProvider, FormatMessageCallback formatMessageCallback)
-        {
-            if (IsErrorEnabled)
-                WriteInternal(LogLevel.Error, new FormatMessageCallbackFormattedMessage(formatProvider, formatMessageCallback), null);
-        }
+            => Error(formatProvider, formatMessageCallback);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Error"/> level using a callback to obtain the message
@@ -752,8 +676,20 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="exception">The exception to log, including its stack Error.</param>
         public override void Error(IFormatProvider formatProvider, FormatMessageCallback formatMessageCallback, Exception exception)
         {
+            string _fmt = null;
+            object[] _args = null;
             if (IsErrorEnabled)
-                WriteInternal(LogLevel.Error, new FormatMessageCallbackFormattedMessage(formatProvider, formatMessageCallback), exception);
+            {
+                formatMessageCallback(f);
+                _WriteInternal(LogLevel.Error, _fmt, exception, _args);
+            }
+
+            string f(string fmt, object[] args)
+            {
+                _fmt = fmt;
+                _args = args;
+                return string.Empty;
+            }
         }
 
         #endregion
@@ -764,11 +700,7 @@ namespace Common.Logging.MicrosoftLogging
         /// Log a message object with the <see cref="LogLevel.Fatal"/> level.
         /// </summary>
         /// <param name="message">The message object to log.</param>
-        public override void Fatal(object message)
-        {
-            if (IsFatalEnabled)
-                WriteInternal(LogLevel.Fatal, message, null);
-        }
+        public override void Fatal(object message) => Fatal(message, null);
 
         /// <summary>
         /// Log a message object with the <see cref="LogLevel.Fatal"/> level including
@@ -780,7 +712,7 @@ namespace Common.Logging.MicrosoftLogging
         public override void Fatal(object message, Exception exception)
         {
             if (IsFatalEnabled)
-                WriteInternal(LogLevel.Fatal, message, exception);
+                _WriteInternal(LogLevel.Fatal, message, exception, null);
         }
 
         /// <summary>
@@ -790,10 +722,7 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="format">The format of the message object to log.<see cref="string.Format(string,object[])"/> </param>
         /// <param name="args"></param>
         public override void FatalFormat(IFormatProvider formatProvider, string format, params object[] args)
-        {
-            if (IsFatalEnabled)
-                WriteInternal(LogLevel.Fatal, new StringFormatFormattedMessage(formatProvider, format, args), null);
-        }
+            => FatalFormat(format, null, args);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Fatal"/> level.
@@ -803,10 +732,7 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="exception">The exception to log.</param>
         /// <param name="args"></param>
         public override void FatalFormat(IFormatProvider formatProvider, string format, Exception exception, params object[] args)
-        {
-            if (IsFatalEnabled)
-                WriteInternal(LogLevel.Fatal, new StringFormatFormattedMessage(formatProvider, format, args), exception);
-        }
+            => FatalFormat(format, exception, args);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Fatal"/> level.
@@ -814,10 +740,7 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="format">The format of the message object to log.<see cref="string.Format(string,object[])"/> </param>
         /// <param name="args">the list of format arguments</param>
         public override void FatalFormat(string format, params object[] args)
-        {
-            if (IsFatalEnabled)
-                WriteInternal(LogLevel.Fatal, new StringFormatFormattedMessage(null, format, args), null);
-        }
+            => FatalFormat(format, null, args);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Fatal"/> level.
@@ -828,7 +751,7 @@ namespace Common.Logging.MicrosoftLogging
         public override void FatalFormat(string format, Exception exception, params object[] args)
         {
             if (IsFatalEnabled)
-                WriteInternal(LogLevel.Fatal, new StringFormatFormattedMessage(null, format, args), exception);
+                _WriteInternal(LogLevel.Fatal, format, exception, args);
         }
 
         /// <summary>
@@ -840,10 +763,7 @@ namespace Common.Logging.MicrosoftLogging
         /// </remarks>
         /// <param name="formatMessageCallback">A callback used by the logger to obtain the message if log level is matched</param>
         public override void Fatal(FormatMessageCallback formatMessageCallback)
-        {
-            if (IsFatalEnabled)
-                WriteInternal(LogLevel.Fatal, new FormatMessageCallbackFormattedMessage(formatMessageCallback), null);
-        }
+            => Fatal(null, formatMessageCallback, null);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Fatal"/> level using a callback to obtain the message
@@ -855,10 +775,7 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="formatMessageCallback">A callback used by the logger to obtain the message if log level is matched</param>
         /// <param name="exception">The exception to log, including its stack Fatal.</param>
         public override void Fatal(FormatMessageCallback formatMessageCallback, Exception exception)
-        {
-            if (IsFatalEnabled)
-                WriteInternal(LogLevel.Fatal, new FormatMessageCallbackFormattedMessage(formatMessageCallback), exception);
-        }
+            => Fatal(null, formatMessageCallback, exception);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Fatal"/> level using a callback to obtain the message
@@ -870,10 +787,7 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="formatProvider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information.</param>
         /// <param name="formatMessageCallback">A callback used by the logger to obtain the message if log level is matched</param>
         public override void Fatal(IFormatProvider formatProvider, FormatMessageCallback formatMessageCallback)
-        {
-            if (IsFatalEnabled)
-                WriteInternal(LogLevel.Fatal, new FormatMessageCallbackFormattedMessage(formatProvider, formatMessageCallback), null);
-        }
+            => Fatal(formatProvider, formatMessageCallback, null);
 
         /// <summary>
         /// Log a message with the <see cref="LogLevel.Fatal"/> level using a callback to obtain the message
@@ -887,13 +801,30 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="exception">The exception to log, including its stack Fatal.</param>
         public override void Fatal(IFormatProvider formatProvider, FormatMessageCallback formatMessageCallback, Exception exception)
         {
-            if (IsFatalEnabled)
-                WriteInternal(LogLevel.Fatal, new FormatMessageCallbackFormattedMessage(formatProvider, formatMessageCallback), exception);
+            string _fmt = null;
+            object[] _args = null;
+            if (IsErrorEnabled)
+            {
+                formatMessageCallback(f);
+                _WriteInternal(LogLevel.Fatal, _fmt, exception, _args);
+            }
+
+            string f(string fmt, object[] args)
+            {
+                _fmt = fmt;
+                _args = args;
+                return string.Empty;
+            }
         }
 
         #endregion
 
         #endregion
+
+        protected override void WriteInternal(LogLevel level, object message, Exception exception)
+        {
+            _WriteInternal(level, message, exception, null);
+        }
 
         /// <summary>
         /// Actually sends the message to the underlying log system.
@@ -901,13 +832,24 @@ namespace Common.Logging.MicrosoftLogging
         /// <param name="logLevel">the level of this log event.</param>
         /// <param name="message">the message to log</param>
         /// <param name="exception">the exception to log (may be null)</param>
-        protected override void WriteInternal(LogLevel logLevel, object message, Exception exception)
+        /// <param name="args">arguments (may be null)</param>
+        private void _WriteInternal(LogLevel logLevel, object message, Exception exception, object[] args)
         {
             LogLevelMS level = GetLevel(logLevel);
 
             var msg = (message as string) ?? message?.ToString();
 
-            if (msg != null)
+            if (msg == null)
+                return;
+
+            if (args != null)
+            {
+                if (exception != null)
+                    _logger.Log(level, msg, exception, args);
+                else
+                    _logger.Log(level, msg, args);
+            }
+            else
             {
                 if (exception != null)
                     _logger.Log(level, msg, exception);
