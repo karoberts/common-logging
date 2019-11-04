@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
+    <Company>http://netcommon.sourceforge.net/</Company>
+    <Copyright>(c) 2019 the Common Infrastructure Libraries Team. (+NTERSOL)</Copyright>
+    <Product>Common.Logging.MicrosoftLogging (NTERSOL)</Product>
+    <Description>Common.Logging.MicrosoftLogging (netstandard) (NTERSOL)</Description>
+    <Version>3.4.2</Version>
+    <AssemblyVersion>3.4.2</AssemblyVersion>
+    <FileVersion>3.4.2</FileVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>../../NTERSOL.snk</AssemblyOriginatorKeyFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <DefineConstants>NETSTANDARD;NETSTANDARD20</DefineConstants>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp3.0'">
+    <DefineConstants>NETSTANDARD;NETCORE;NETCORE3</DefineConstants>
+  </PropertyGroup>
+  
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="[2.2.0,3)" />
+  </ItemGroup>
+  
+  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.0'">
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Common.Logging.DotNetCore\Common.Logging.DotNetCore.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  
+</Project>
