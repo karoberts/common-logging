@@ -845,14 +845,14 @@ namespace Common.Logging.MicrosoftLogging
             if (args != null)
             {
                 if (exception != null)
-                    _logger.Log(level, msg, exception, args);
+                    _logger.Log(level, exception, msg, args);
                 else
                     _logger.Log(level, msg, args);
             }
             else
             {
                 if (exception != null)
-                    _logger.Log(level, msg, exception);
+                    _logger.Log(level, exception, msg);
                 else
                     _logger.Log(level, msg);
             }
